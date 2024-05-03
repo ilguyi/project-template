@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "project-template"
+version = "0.1.0"
+description = ""
+authors = ["Il Gu Yi <ilgu.yi.219@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pre-commit = "^3.7.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
