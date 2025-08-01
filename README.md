@@ -1,42 +1,56 @@
 # Python Project Template
 
-
 ## Introduction
-
 
 ## Installation
 
-#### 1. Edit `pyproject.toml` file.
+### 1. Edit `pyproject.toml` file
+
 * `name`: change the new project name
-* `python`: modify python version you want
+* `python`: modify python version you want (requires-python = ">=3.12")
 
 #### 1-1. change project directory
+
 ```bash
 git mv project_template <new_name>
 ```
+
 #### 2. set python version
+
 ```bash
-pyenv local 3.xx
+pyenv local 3.12
 ```
-#### 3. set the virtualenv based on current python version using `poetry`
+
+#### 3. install uv (if not already installed)
+
 ```bash
-poetry env use python
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
-#### 4. install project using `poetry`
+
+#### 4. create virtual environment and sync dependencies
+
 ```bash
-poetry install
+# Create virtual environment with custom prompt name
+uv venv .venv --prompt <project_name>
+# Sync all dependencies (including dev dependencies)
+uv sync --all-extras
+# Activate the virtual environment
+source .venv/bin/activate
 ```
-#### 5. activate virtualenv
+
+#### 5. Alternative: install only production dependencies
+
 ```bash
-poetry shell
+# If you only want production dependencies (without dev dependencies)
+uv sync --no-dev
 ```
+
 #### 6. `pre-commit` install
+
 ```bash
 pre-commit install
 ```
 
-
 ## Quickstart
-
 
 ## Usage
