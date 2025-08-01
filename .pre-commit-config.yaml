@@ -1,61 +1,128 @@
-# @see https://pre-commit.com/hooks.html
-# @see https://github.com/readthedocs/common/blob/a7af72b7e5946d62fd3b4dc524d6406604488f6f/pre-commit-config.yaml
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
 
 repos:
 
-- repo: https://github.com/pre-commit/pre-commit-hooks.git
-  rev: v2.3.0
-  hooks:
-  # prevent giant files from being committed
-  - id: check-added-large-files
-    args: ['--maxkb=5120']
-  # check for UTF-8 byte-order marker
-  - id: check-byte-order-marker
-  # check for files that could conflict in case-insensitive filesystems
-  - id: check-case-conflict
-  # check for debugger imports and Python 3.7 or above breakpoint() calls
-  - id: debug-statements
-  # replace double quoted strings with single quoted strings
-  # - id: double-quote-string-fixer
-  # ensure that a file is either empty or ends with single new line
-  - id: end-of-file-fixer
-    exclude: 'static'
-  # add '# -*- config: utf-8 -*-' at the top
-  - id: fix-encoding-pragma
-    args: ['--remove']  # remove the encoding pragma
-  # check for merge conflict strings
-  - id: check-merge-conflict
-  # check for symlinks pointing to nothing
-  - id: check-symlinks
-  # trim trailing whitespaces
-  - id: trailing-whitespace
-  # check mixed line ending
-  - id: mixed-line-ending
-    args: ['--fix=lf']  # make lines end with LF
-  # sort all entries and remove entries with version 0.0.0 in requirements.txt
-  - id: requirements-txt-fixer
-  # ensure that files in tests/ directory end in *_test.py
-  - id: name-tests-test
-    #  args: ['--django']  # allow test*.py
-  # check yaml file
-  - id: check-yaml
-  # check against PEP 8
-  - id: flake8
-    args: ['--ignore=E111,E114,E121,E501,W503']  # ignore specific errors
+  # General purpose hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # Essential hooks
+      - id: check-added-large-files
+        args: ['--maxkb=5120']
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+        exclude: 'static'
+      - id: trailing-whitespace
+        args: ['--markdown-linebreak-ext=md']
+      - id: detect-private-key
 
-- repo: https://github.com/google/yapf
-  rev: v0.40.2
-  hooks:
-  - id: yapf
-    language: python
-    args: [--style, '{based_on_style: google, indent_width: 2}']
+      # Optional but useful
+      - id: check-case-conflict
+      - id: debug-statements
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+      - id: check-yaml
+        args: ['--allow-multiple-documents']
+      - id: check-json
+      - id: check-toml
+      # - id: check-symlinks
+      # - id: destroyed-symlinks
+      - id: name-tests-test
+        args: ['--pytest-test-first']
 
-- repo: https://github.com/myint/autoflake
-  rev: v2.2.0
-  hooks:
-  - id: autoflake
-    args:
-      - --in-place
-      - --remove-unused-variables
-      - --remove-all-unused-imports
-      - --expand-star-imports
+  # Python code formatting and linting with Ruff (replaces black, isort, flake8, and more)
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.6
+    hooks:
+      # Run the formatter
+      - id: ruff-format
+      # Run the linter
+      - id: ruff
+        args: ['--fix']
+
+  # Python type checking with mypy
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.14.1
+    hooks:
+      - id: mypy
+        additional_dependencies: []
+        args: ['--ignore-missing-imports', '--strict-optional', '--warn-redundant-casts']
+
+  # Security checks with bandit (optional)
+  - repo: https://github.com/pycqa/bandit
+    rev: 1.8.6
+    hooks:
+      - id: bandit
+        args: ['-ll']
+        exclude: '^(tests/|\.git/|\.venv/|\.uv/|\.mypy_cache/|\.ruff_cache/|__pycache__/|node_modules/|build/|dist/)'
+
+  # Python docstring style checking (optional)
+  - repo: https://github.com/pycqa/pydocstyle
+    rev: 6.3.0
+    hooks:
+      - id: pydocstyle
+        additional_dependencies: ['tomli']
+
+  # Markdown linting (optional)
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.43.0
+    hooks:
+      - id: markdownlint
+        args: ['--fix']
+
+  # Spell checking (optional)
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        args: ['--skip=*.lock,*.svg', '--ignore-words-list=nam,crate']
+
+  # Check for hardcoded secrets
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+
+  # Validate GitHub Actions workflow files
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.30.0
+    hooks:
+      - id: check-github-actions
+      - id: check-github-workflows
+
+  # UV specific checks
+  - repo: local
+    hooks:
+      # Check if uv.lock is up to date with pyproject.toml
+      - id: uv-lock-check
+        name: Check uv.lock is up to date
+        entry: uv lock --check
+        language: system
+        files: 'pyproject\.toml$'
+        pass_filenames: false
+
+# Configuration for specific tools
+default_language_version:
+  python: python3.12
+
+# Global excludes
+exclude: |
+  (?x)^(
+    .*\.min\.js|
+    .*\.min\.css|
+    vendor/|
+    node_modules/|
+    migrations/|
+    \.git/|
+    \.tox/|
+    dist/|
+    build/|
+    \.uv/|
+    \.python-version
+  )$
+
+# Run configuration
+ci:
+  autofix_prs: false
+  autoupdate_schedule: monthly

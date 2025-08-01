@@ -1,17 +1,118 @@
-[tool.poetry]
-name = "project-template"
+[project]
+name = "project-name"
 version = "0.1.0"
-description = ""
-authors = ["Il Gu Yi <ilgu.yi.219@gmail.com>"]
+description = "Add description here"
+authors = [
+  {name = "Il Gu YI", email = "ilgu.yi.219@gmail.com"},
+]
+license = {text = "MIT"}
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.11"
-pre-commit = "^3.7.0"
-yapf = "^0.40.2"
-toml = "^0.10.2"
-
+requires-python = ">=3.12"
+keywords = ["keyword1", "keyword2"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = []
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+  "bandit>=1.8.6",
+  "codespell>=2.4.1",
+  "mypy>=1.17.1",
+  "pre-commit>=4.2.0",
+  "pydocstyle>=6.3.0",
+  "pytest>=8.4.1",
+  "pytest-cov>=6.2.1",
+  "ruff>=0.12.7",
+]
+
+# Ruff configuration
+[tool.ruff]
+indent-width = 2
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.format]
+indent-style = "space"
+quote-style = "double"
+
+[tool.ruff.lint]
+select = [
+  "E",    # pycodestyle errors
+  "W",    # pycodestyle warnings
+  "F",    # pyflakes
+  "I",    # isort
+  "N",    # pep8-naming
+  "UP",   # pyupgrade
+  "B",    # flake8-bugbear
+  "A",    # flake8-builtins
+  "C4",   # flake8-comprehensions
+  "SIM",  # flake8-simplify
+  "RUF",  # Ruff-specific rules
+]
+ignore = [
+  "E111",  # indentation is not a multiple of four
+  "E114",  # indentation is not a multiple of four (comment)
+]
+
+[tool.ruff.lint.isort]
+force-single-line = false
+lines-after-imports = 2
+
+
+# mypy configuration
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_optional = true
+
+# pytest configuration
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--cov=src",
+    "--cov-report=html",
+    "--cov-report=term-missing",
+]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["src"]
+omit = ["*/tests/*", "*/test_*.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+# pydocstyle configuration
+[tool.pydocstyle]
+convention = "google"
+add-ignore = ["D100", "D104"]  # Missing docstring in public module/package
+match-dir = "(?!tests|migrations|\\.uv).*"
