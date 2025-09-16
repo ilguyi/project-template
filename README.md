@@ -12,7 +12,7 @@
 #### 1-1. change project directory
 
 ```bash
-git mv project_template <new_name>
+git mv src/project_name src/<new_project_name>
 ```
 
 #### 2. set python version
