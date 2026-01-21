@@ -15,16 +15,16 @@
 git mv src/project_name src/<new_project_name>
 ```
 
-#### 2. set python version
-
-```bash
-pyenv local 3.12
-```
-
-#### 3. install uv (if not already installed)
+#### 2. install uv (if not already installed)
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+#### 3. set python version
+
+```bash
+uv python pin 3.11
 ```
 
 #### 4. create virtual environment and sync dependencies
