@@ -24,7 +24,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 #### 3. set python version
 
 ```bash
-uv python pin 3.11
+uv python pin 3.12
 ```
 
 #### 4. create virtual environment and sync dependencies
