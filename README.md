@@ -24,7 +24,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 #### 3. set python version
 
 ```bash
-uv python pin 3.12
+uv python pin 3.13
 ```
 
 #### 4. create virtual environment and sync dependencies
@@ -45,10 +45,17 @@ source .venv/bin/activate
 uv sync --no-dev
 ```
 
-#### 6. `pre-commit` install
+#### 6. `prek` install
+
+[prek](https://prek.j178.dev) is a fast, Rust-based reimplementation of the
+pre-commit framework. It reads the hook configuration from `prek.toml`.
 
 ```bash
-pre-commit install
+# Install prek as a uv tool
+uv tool install prek
+
+# Install the git hooks
+prek install
 ```
 
 ## Quickstart
