@@ -17,6 +17,9 @@ git mv src/project_name src/<new_project_name>
 
 #### 2. install uv (if not already installed)
 
+[uv](https://docs.astral.sh/uv) is an extremely fast, Rust-based Python package
+and project manager that replaces pip, pip-tools, virtualenv, and more.
+
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
