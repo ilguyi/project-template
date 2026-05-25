@@ -7,7 +7,7 @@
 ### 1. Edit `pyproject.toml` file
 
 * `name`: change the new project name
-* `python`: modify python version you want (requires-python = ">=3.12")
+* `python`: modify python version you want (requires-python = ">=3.13")
 
 #### 1-1. change project directory
 
