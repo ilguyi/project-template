@@ -25,13 +25,13 @@ build-backend = "hatchling.build"
 [dependency-groups]
 dev = [
     "bandit>=1.9.4",
-    "codespell>=2.4.2",
-    "mypy>=2.1.0",
+    "codespell>=2.4.3",
+    "mypy>=2.4.1",
     "pydocstyle>=6.3.0",
-    "pytest>=9.0.3",
+    "pytest>=9.2.0",
     "pytest-cov>=7.1.0",
-    "ruff>=0.15.14",
-    "types-pyyaml>=6.0.12.20260518",
+    "ruff>=0.17.5",
+    "types-pyyaml>=6.0.12.20261113",
 ]
 
 # Ruff configuration
